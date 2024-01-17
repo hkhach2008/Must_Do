@@ -11,21 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
-    FirebaseAuth m_auth;
-    private EditText sign_up_email, sign_up_username, sign_up_password;
-    private Button btn_sign_up_button;
+    EditText sign_up_email, sign_up_username, sign_up_password;
+    Button btn_sign_up_button;
+    FirebaseDatabase database;
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
 
-        m_auth = FirebaseAuth.getInstance();
         sign_up_email = findViewById(R.id.sign_up_email);
         sign_up_username = findViewById(R.id.sign_up_username);
         sign_up_password = findViewById(R.id.sign_up_password);
@@ -33,16 +32,19 @@ public class SignUp extends AppCompatActivity {
         btn_sign_up_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startUserRegistration();
+                startUserSignUp();
             }
         });
     }
 
-    private void startUserRegistration()
+    private void startUserSignUp()
     {
-        String username = sign_up_username.getText().toString().trim();
-        String email = sign_up_email.getText().toString().trim();
-        String password = sign_up_password.getText().toString().trim();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("users");
+
+        String username = sign_up_username.getText().toString();
+        String email = sign_up_email.getText().toString();
+        String password = sign_up_password.getText().toString();
         if(username.isEmpty())
             Toast.makeText(this, "Please enter username!", Toast.LENGTH_SHORT).show();
         else if(email.isEmpty())
@@ -55,26 +57,9 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this, "Please enter username!", Toast.LENGTH_SHORT).show();
         else
         {
-            m_auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
-                                User user = new User(username, email, password);
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful())
-                                            Toast.makeText(SignUp.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                                        else
-                                            Toast.makeText(SignUp.this, "User failed to register", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-                            else
-                                Toast.makeText(SignUp.this, "User failed to register", Toast.LENGTH_LONG).show();
-                        }
-                    });
+            User user = new User(username, email, password);
+            reference.child(username).setValue(user);
+            Toast.makeText(SignUp.this, "You have sign up successfully", Toast.LENGTH_SHORT).show();
         }
     }
 }

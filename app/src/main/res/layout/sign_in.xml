@@ -34,12 +34,12 @@
             </TextView>
 
             <EditText
-                android:id="@+id/sign_in_username_email"
+                android:id="@+id/sign_in_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
-                android:hint="@string/sign_in_username"
+                android:hint="@string/sign_in_email"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="40dp"
@@ -47,7 +47,7 @@
             </EditText>
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/sign_in_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/custom_edittext"
@@ -60,7 +60,7 @@
             </EditText>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/sign_in_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_in"
