@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/popup_school"
+        android:title="School"
+        >
+    </item>
+
+    <item android:id="@+id/popup_house"
+        android:title="House"
+        >
+    </item>
+
+    <item android:id="@+id/popup_car"
+        android:title="Car"
+        >
+    </item>
+</menu>
