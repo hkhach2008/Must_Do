@@ -1,4 +1,5 @@
 package com.example.must_do_002;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -60,6 +61,8 @@ public class SignUp extends AppCompatActivity {
             User user = new User(username, email, password);
             reference.child(username).setValue(user);
             Toast.makeText(SignUp.this, "You have sign up successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SignUp.this, SignIn.class);
+            startActivity(intent);
         }
     }
 }
