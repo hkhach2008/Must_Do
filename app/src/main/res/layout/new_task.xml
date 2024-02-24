@@ -1,29 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".AddNewTask">
 
     <EditText
         android:id="@+id/new_task_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:hint="New Task"
-        >
-    </EditText>
-    
+        android:hint="Enter task here"
+        android:inputType="textCapSentences"/>
+
     <Button
         android:id="@+id/new_task_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/new_task_text"
-        android:layout_alignParentEnd="true"
-        android:textSize="16sp"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:background="@android:color/transparent"
-        android:textColor="@color/purple"
-        >
-    </Button>
-</RelativeLayout>
+        android:text="Save Task"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
+        android:background="?attr/colorPrimary"/>
+
+</LinearLayout>

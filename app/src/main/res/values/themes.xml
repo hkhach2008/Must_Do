@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.Must_Do_002" parent="Base.Theme.Must_Do_002" />
+    
+    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog"
+        >
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
 </resources>

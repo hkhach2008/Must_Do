@@ -4,58 +4,52 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.must_do_002.MainActivity;
 import com.example.must_do_002.Model.ToDoModel;
 import com.example.must_do_002.R;
-
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
-    private List<ToDoModel> todo_list;
-    private MainActivity activity;
+    private List<ToDoModel> todoList;
 
-    public ToDoAdapter(MainActivity activity)
-    {
-        this.activity = activity;
+    public ToDoAdapter(List<ToDoModel> todoList) {
+        this.todoList = todoList;
     }
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
         return new ViewHolder(itemView);
     }
 
-    public void onBindViewHolder(ViewHolder holder, int position)
-    {
-        ToDoModel item = todo_list.get(position);
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ToDoModel item = todoList.get(position);
         holder.task.setText(item.getTask());
-        holder.task.setChecked(toBoolean(item.getStatus()));
+        holder.task.setChecked(item.getStatus() != 0);
     }
 
-    public int getItemCount()
-    {
-        return todo_list.size();
+    @Override
+    public int getItemCount() {
+        return todoList.size();
     }
 
-    private boolean toBoolean(int n)
-    {
-        return n != 0;
-    }
-
-    public void setTasks(List<ToDoModel> todo_list)
-    {
-        this.todo_list = todo_list;
+    public void setTasks(List<ToDoModel> todoList) {
+        this.todoList = todoList;
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public void addTask(ToDoModel task) {
+        todoList.add(task);
+        notifyItemInserted(todoList.size() - 1);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox task;
-        ViewHolder(View view)
-        {
+
+        ViewHolder(View view) {
             super(view);
             task = view.findViewById(R.id.task_checkbox);
         }
