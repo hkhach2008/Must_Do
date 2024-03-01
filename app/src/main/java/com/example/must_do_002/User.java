@@ -1,27 +1,41 @@
 package com.example.must_do_002;
 
 public class User {
-    public String username;
-    public String email;
-    public String password;
+    private int id;
+    private String name;
+    private String email;
+    private String password;
 
-    public User()
-    {
-
-    }
-    public User(String username, String email, String password)
-    {
-        this.username = username;
+    // Constructor used for creating a new user
+    public User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    // Constructor used when fetching users from the database where the id is known
+    public User(int id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

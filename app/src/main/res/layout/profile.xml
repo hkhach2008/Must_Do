@@ -4,21 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/home_page_img"
-    >
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:visibility="gone"
+        android:text="Username"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/profile_sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/profile_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in"
-        >
-    </Button>
+        android:text="@string/sign_in"/>
 
     <Button
         android:id="@+id/profile_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        >
-    </Button>
+        android:text="@string/sign_up"/>
 </LinearLayout>
