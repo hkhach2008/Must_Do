@@ -66,4 +66,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursorCount > 0;
     }
+
+    // Method to fetch username based on email
+    public String getUserNameByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_USER_NAME};
+        String selection = COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            String username = cursor.getString(0);
+            cursor.close();
+            db.close();
+            return username;
+        } else {
+            cursor.close();
+            db.close();
+            return null; // User not found
+        }
+    }
 }
