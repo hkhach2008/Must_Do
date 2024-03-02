@@ -21,6 +21,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
     private EditText new_task_text;
     private Button new_task_save_button;
+    private String userEmail;
 
     // Define an interface for the callback
     public interface TaskSaveListener {
@@ -34,14 +35,22 @@ public class AddNewTask extends BottomSheetDialogFragment {
         this.taskSaveListener = taskSaveListener;
     }
 
-    public static AddNewTask newInstance() {
-        return new AddNewTask();
+    // Static method to create a new instance of AddNewTask and pass userEmail
+    public static AddNewTask newInstance(String userEmail) {
+        AddNewTask fragment = new AddNewTask();
+        Bundle args = new Bundle();
+        args.putString("userEmail", userEmail); // Pass the userEmail to the fragment
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.DialogStyle);
+        if (getArguments() != null) {
+            userEmail = getArguments().getString("userEmail", ""); // Retrieve the userEmail
+        }
     }
 
     @Override
@@ -56,18 +65,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         new_task_text = view.findViewById(R.id.new_task_text);
         new_task_save_button = view.findViewById(R.id.new_task_button);
-
-        boolean isUpdate = false; // This flag could be used if you're planning to use this dialog for editing tasks as well
-
-        final Bundle bundle = getArguments();
-        if (bundle != null) {
-            isUpdate = true; // Assuming you're passing a flag or data to indicate an update operation
-            String task = bundle.getString("task", ""); // Using default value to avoid null
-            new_task_text.setText(task);
-            if (!task.isEmpty()) {
-                new_task_save_button.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
-            }
-        }
+        new_task_save_button.setEnabled(false); // Initially disable the save button until text is entered
 
         new_task_text.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,6 +97,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     newTask.setTask(taskText);
                     newTask.setStatus(0); // Assuming 0 is the status for a new (incomplete) task
                     taskSaveListener.onTaskSave(newTask);
+
+                    // Save the task to the database
+                    DatabaseHelper db = new DatabaseHelper(getContext());
+                    db.addTask(taskText, 0, userEmail); // Saving the task associated with the userEmail
+
                     dismiss(); // Close the BottomSheetDialogFragment
                 }
             }
