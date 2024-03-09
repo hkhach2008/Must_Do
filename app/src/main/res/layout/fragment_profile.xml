@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/home_page_img"
     android:gravity="center"
     android:padding="16dp">
 
@@ -27,11 +26,11 @@
         android:id="@+id/profile_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in"/>
+        android:text="Sign In"/>
 
     <Button
         android:id="@+id/profile_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up"/>
+        android:text="Sign Up"/>
 </LinearLayout>

@@ -23,13 +23,13 @@
         </activity>
 
         <activity
-            android:name=".Profile"
+            android:name=".ProfileFragment"
             android:exported="false" />
         <activity
-            android:name=".SignIn"
+            android:name=".SignInFragment"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".SignUpFragment"
             android:exported="false" />
     </application>
 

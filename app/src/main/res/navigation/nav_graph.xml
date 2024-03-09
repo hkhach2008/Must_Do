@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_tasks">
+
+    <!-- Tasks Fragment -->
+    <fragment
+        android:id="@+id/navigation_tasks"
+        android:name="com.example.must_do_002.TasksFragment"
+        android:label="Tasks"
+        tools:layout="@layout/fragment_tasks" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.must_do_002.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <!-- Sign In Fragment -->
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.must_do_002.SignInFragment"
+        android:label="Sign In"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_profileFragment"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+
+
+    <!-- Sign Up Fragment -->
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.must_do_002.SignUpFragment"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_sign_up" />
+
+    <!-- Navigation actions can be added if you have specific custom navigation requirements -->
+    <!-- ... -->
+
+</navigation>
