@@ -9,12 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.must_do_002.Model.ToDoModel;
 import com.example.must_do_002.R;
+import com.example.must_do_002.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
-    private List<ToDoModel> todoList = new ArrayList<>();
+    private List<ToDoModel> todoList;
+    private DatabaseHelper databaseHelper;
+
+    public ToDoAdapter(DatabaseHelper dbHelper) {
+        this.todoList = new ArrayList<>();
+        this.databaseHelper = dbHelper;
+    }
 
     @NonNull
     @Override
@@ -35,15 +42,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         return todoList.size();
     }
 
-    // Method to set new list of tasks
     public void setTasks(List<ToDoModel> newTodoList) {
-        todoList.clear(); // Clear existing list
-        todoList.addAll(newTodoList); // Add new list
-        notifyDataSetChanged(); // Notify the adapter to update the RecyclerView
+        todoList.clear();
+        todoList.addAll(newTodoList);
+        notifyDataSetChanged();
     }
 
+    public void removeItem(int position) {
+        ToDoModel item = todoList.get(position);
+        databaseHelper.deleteTask(item.getId()); // Make sure you have a deleteTask method in your DatabaseHelper class
+        todoList.remove(position);
+        notifyItemRemoved(position);
+    }
 
-    // ViewHolder class for the layout of each item
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox task;
 

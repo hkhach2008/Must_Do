@@ -3,6 +3,7 @@ package com.example.must_do_002;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.PopupMenu;
 
 import com.example.must_do_002.Adapter.ToDoAdapter;
 import com.example.must_do_002.Model.ToDoModel;
+import com.example.must_do_002.DatabaseHelper;
 
 import java.util.List;
 
@@ -39,8 +41,24 @@ public class TasksFragment extends Fragment implements AddNewTask.TaskSaveListen
         tasksRecyclerView = view.findViewById(R.id.tasks_recycler_view);
 
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksAdapter = new ToDoAdapter();
+
+        // Pass the database helper to the adapter
+        tasksAdapter = new ToDoAdapter(databaseHelper);
         tasksRecyclerView.setAdapter(tasksAdapter);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false; // We don't want move functionality in this tutorial
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                tasksAdapter.removeItem(viewHolder.getAdapterPosition());
+            }
+        };
+
+        new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(tasksRecyclerView);
 
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +81,7 @@ public class TasksFragment extends Fragment implements AddNewTask.TaskSaveListen
         currentUserEmail = sharedPreferences.getString("UserEmail", "");
         if (!currentUserEmail.isEmpty()) {
             List<ToDoModel> tasks = databaseHelper.getAllTasksForUser(currentUserEmail);
-            tasksAdapter.setTasks(tasks); // This should clear and update the adapter's data
+            tasksAdapter.setTasks(tasks);
         }
     }
 
@@ -77,7 +95,7 @@ public class TasksFragment extends Fragment implements AddNewTask.TaskSaveListen
                     showAddNewTaskDialog();
                     return true;
                 }
-                // Add more cases for other task categories if needed
+                // More cases can be added for different task categories
                 return false;
             }
         });
@@ -93,6 +111,6 @@ public class TasksFragment extends Fragment implements AddNewTask.TaskSaveListen
     @Override
     public void onTaskSave(ToDoModel newTask) {
         databaseHelper.addTask(newTask.getTask(), newTask.getStatus(), currentUserEmail);
-        populateInitialTasks(); // Call this to refresh the list from the database
+        populateInitialTasks();
     }
 }

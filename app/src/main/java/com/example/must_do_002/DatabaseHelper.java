@@ -105,39 +105,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-//    public void addTask(String task, int status, String userEmail) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_TASK, task);
-//        values.put(COLUMN_STATUS, status);
-//        values.put(COLUMN_USER_EMAIL, userEmail);
-//        db.insert(TABLE_TASK, null, values);
-//        db.close();
-//    }
-
     public void addTask(String task, int status, String userEmail) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Check if the task already exists for the user
-        String selection = COLUMN_TASK + " = ? AND " + COLUMN_USER_EMAIL + " = ?";
-        String[] selectionArgs = {task, userEmail};
-        Cursor cursor = db.query(TABLE_TASK, new String[]{COLUMN_TASK_ID}, selection, selectionArgs, null, null, null);
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TASK, task);
+        values.put(COLUMN_STATUS, status);
+        values.put(COLUMN_USER_EMAIL, userEmail);
 
-        if (cursor.moveToFirst()) {
-            // Task already exists, do not insert
-            cursor.close();
-        } else {
-            // Task does not exist, insert now
-            cursor.close();
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_TASK, task);
-            values.put(COLUMN_STATUS, status);
-            values.put(COLUMN_USER_EMAIL, userEmail);
-            db.insert(TABLE_TASK, null, values);
-        }
+        db.insert(TABLE_TASK, null, values);
         db.close();
     }
-
 
     @SuppressLint("Range")
     public List<ToDoModel> getAllTasksForUser(String userEmail) {
@@ -161,5 +139,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return tasks;
+    }
+
+    public void deleteTask(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TASK, COLUMN_TASK_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
     }
 }
