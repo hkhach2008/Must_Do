@@ -105,15 +105,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+//    public void addTask(String task, int status, String userEmail) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_TASK, task);
+//        values.put(COLUMN_STATUS, status);
+//        values.put(COLUMN_USER_EMAIL, userEmail);
+//
+//        db.insert(TABLE_TASK, null, values);
+//        db.close();
+//    }
+
     public void addTask(String task, int status, String userEmail) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TASK, task);
-        values.put(COLUMN_STATUS, status);
-        values.put(COLUMN_USER_EMAIL, userEmail);
+        // Check if the task already exists for the user
+        String selection = COLUMN_TASK + " = ? AND " + COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = {task, userEmail};
+        Cursor cursor = db.query(TABLE_TASK, new String[]{COLUMN_TASK_ID}, selection, selectionArgs, null, null, null);
 
-        db.insert(TABLE_TASK, null, values);
+        if (cursor.moveToFirst()) {
+            // Task already exists, do not insert
+            cursor.close();
+        } else {
+            // Task does not exist, insert now
+            cursor.close();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_TASK, task);
+            values.put(COLUMN_STATUS, status);
+            values.put(COLUMN_USER_EMAIL, userEmail);
+            db.insert(TABLE_TASK, null, values);
+        }
         db.close();
     }
 
