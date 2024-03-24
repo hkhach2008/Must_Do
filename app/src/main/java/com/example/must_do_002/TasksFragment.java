@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.must_do_002.Adapter.ToDoAdapter;
 import com.example.must_do_002.Model.ToDoModel;
@@ -54,8 +55,20 @@ public class TasksFragment extends Fragment implements AddNewTask.TaskSaveListen
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                tasksAdapter.removeItem(viewHolder.getAdapterPosition());
+                int position = viewHolder.getAdapterPosition();
+
+                new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.confirm_delete) // This would be a string resource in your strings.xml
+                        .setPositiveButton(R.string.yes, (dialog, which) -> {
+                            tasksAdapter.removeItem(position);
+                        })
+                        .setNegativeButton(R.string.no, (dialog, which) -> {
+                            tasksAdapter.notifyItemChanged(position); // This will tell the adapter to rebind the ViewHolder, effectively undoing the swipe
+                        })
+                        .create()
+                        .show();
             }
+
         };
 
         new ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(tasksRecyclerView);
